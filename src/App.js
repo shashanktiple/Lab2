@@ -43,7 +43,9 @@ function App() {
   return (
     <div>
       <UserBar user={state.user} dispatch={dispatch} />
-      <PostList posts={state.posts} />
+      {state.user && (
+        <PostList user={state.user} posts={state.posts} dispatch={dispatch} />
+      )}
       {state.user && (
         <CreatePost user={state.user} posts={state.posts} dispatch={dispatch} />
       )}

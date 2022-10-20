@@ -18,10 +18,29 @@ function postReducer(state, action) {
         content: action.content,
         author: action.author,
         dateCreated: action.dateCreated,
-        dateCompleted: action.dateCompleted,
-        completed: action.completed,
+        dateCompleted: "",
+        completed: "False",
       };
       return [newPost, ...state];
+    case "TOGGLE_TODO":
+      console.log("Toggle");
+      const current = new Date();
+      var currentDate = `${current.getDate()}/${current.getMonth() +
+        1}/${current.getFullYear()}`;
+      state = state.map((x) => {
+        if (x.title === action.title) {
+          x.completed = action.completed;
+          if (action.completed === "True") {
+            x.dateCompleted = currentDate;
+          } else {
+            x.dateCompleted = "";
+          }
+        }
+        return x;
+      });
+      return state;
+    case "DELETE_TODO":
+      return (state = state.filter((item) => item.title !== action.title));
     default:
       return state;
   }

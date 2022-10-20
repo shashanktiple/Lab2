@@ -30,12 +30,14 @@ export default function CreatePost({ user, posts, dispatch }) {
           type="text"
           name="create-title"
           id="create-title"
+          required
           value={title}
           onChange={(event) => setTitle(event.target.value)}
         />
       </div>
       <textarea
         value={content}
+        required
         onChange={(event) => setContent(event.target.value)}
       />
       <input type="submit" value="Create" />

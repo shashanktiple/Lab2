@@ -1,32 +1,49 @@
 import React from "react";
 import { useState } from "react";
 
-export default function Post({ title, content, author, dateCreated }) {
+export default function Post({
+  title,
+  content,
+  author,
+  dateCreated,
+  dispatch,
+  completed,
+  dateCompleted,
+}) {
   console.log("Date created" + dateCreated);
 
-  const current = new Date();
-  const [dateCompleted, setDateCompleted] = useState("");
-  const [completed, setCompleted] = useState("False");
+  const handleChange = (e) => {
+    console.log(e.target.checked);
+    dispatch({
+      type: "TOGGLE_TODO",
+      title,
+      content,
+      author: author,
+      dateCreated,
+      completed: e.target.checked ? "True" : "False",
+    });
+  };
 
-  const handleChange = () => {
-    console.log("Completetion done");
-    var currentDate = `${current.getDate()}/${current.getMonth() +
-      1}/${current.getFullYear()}`;
-    if (dateCompleted != "") {
-      setDateCompleted("");
-      setCompleted("False");
-    } else {
-      setDateCompleted(currentDate);
-      setCompleted("True");
-    }
-    console.log(dateCompleted);
+  const deletePost = (e) => {
+    console.log("Delete post");
+    e.preventDefault();
+    dispatch({
+      type: "DELETE_TODO",
+      title,
+      content,
+      author: author,
+    });
   };
 
   return (
     <div className="container" style={{ marginBottom: "40px" }}>
       <div className="row">
         <div className="col">
-          <input type="checkbox" onChange={handleChange} />
+          <input
+            type="checkbox"
+            checked={completed === "True"}
+            onChange={(event) => handleChange(event)}
+          />
         </div>
         <div className="col">
           <h3>{title}</h3>
@@ -52,6 +69,13 @@ export default function Post({ title, content, author, dateCreated }) {
       <i>
         Date Completion<b>{dateCompleted}</b>
       </i>
+      <div>
+        <input
+          type="submit"
+          value="Delete"
+          onClick={(event) => deletePost(event)}
+        />
+      </div>
     </div>
   );
 }
